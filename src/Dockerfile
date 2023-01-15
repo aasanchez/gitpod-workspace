@@ -1,15 +1,8 @@
 FROM ubuntu:focal
 
-# Install:
-# - git (and git-lfs), for git operations (to e.g. push your work).
-#   Also required for setting up your configured dotfiles in the workspace.
-# - sudo, while not required, is recommended to be installed, since the
-#   workspace user (`gitpod`) is non-root and won't be able to install
-#   and use `sudo` to install any other tools in a live workspace.
-
-ENV TZ=Asia/Dubai
+ENV TZ=Europe/Madrid
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-RUN apt-get update && apt-get install -yq apt-utils tzdata
+RUN DEBIAN_FRONTEND="noninteractive" apt-get update && apt-get install -yq apt-utils tzdata
 
 ## Basics
 RUN apt-get update && apt-get install -yq git git-lfs sudo software-properties-common telnet dnsutils git-core \
