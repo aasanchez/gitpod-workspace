@@ -5,11 +5,11 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN DEBIAN_FRONTEND="noninteractive" apt-get update && apt-get install -yq apt-utils tzdata
 
 ## Basics
-RUN apt-get update && apt-get install -yq git git-lfs sudo software-properties-common telnet dnsutils git-core \
-    build-essential tree curl 
+RUN DEBIAN_FRONTEND="noninteractive" apt-get update && apt-get install -yq git git-lfs sudo software-properties-common \
+    telnet dnsutils git-core build-essential tree curl 
     
 ## Configure APT
-RUN sudo add-apt-repository ppa:git-core/ppa -y \
+RUN DEBIAN_FRONTEND="noninteractive" add-apt-repository ppa:git-core/ppa -y \
     && sudo apt-get update
 
 RUN sudo rm -rf /etc/apt/sources.list \
