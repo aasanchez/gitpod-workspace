@@ -19,13 +19,13 @@ RUN rm -rf /etc/apt/sources.list \
     && echo "deb http://archive.canonical.com/ubuntu focal partner" | tee -a /etc/apt/sources.list \
     && apt-get update
 
-## AWS Cli
-RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && unzip -u awscliv2.zip \
-    && sudo ./aws/install -i /usr/local/aws-cli -b /usr/local/bin \
-    && which aws && ls -l /usr/local/bin/aws && aws --version
+# ## AWS Cli
+# RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && unzip -u awscliv2.zip \
+#     && sudo ./aws/install -i /usr/local/aws-cli -b /usr/local/bin \
+#     && which aws && ls -l /usr/local/bin/aws && aws --version
 
 # ## AWS Vault
-RUN curl -fsSL 'https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh' | bash 
+# RUN curl -fsSL 'https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh' | bash 
     # && brew install aws-vault
 
 ## AWS-Gate
