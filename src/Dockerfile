@@ -26,8 +26,7 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2
 
 # ## AWS Vault
 RUN sudo curl -L -o /usr/local/bin/aws-vault https://github.com/99designs/aws-vault/releases/latest/download/aws-vault-linux-$(dpkg --print-architecture) \
-    && sudo chmod 755 /usr/local/bin/aws-vault \
-    && brew install aws-vault
+    && sudo chmod 755 /usr/local/bin/aws-vault
 
 ## AWS-Gate
 RUN apt-get update && apt-get install -y software-properties-common gcc && \
@@ -36,8 +35,8 @@ RUN apt-get update && apt-get install -y software-properties-common gcc && \
     && pip install aws-gate
 
 ## lefthook
-# RUN curl -1sLf 'https://dl.cloudsmith.io/public/evilmartians/lefthook/setup.deb.sh' | sudo -E bash \
-#     && apt-get update && apt-get install lefthook -yq
+RUN curl -1sLf 'https://dl.cloudsmith.io/public/evilmartians/lefthook/setup.deb.sh' | sudo -E bash \
+    && apt-get update && apt-get install lefthook -yq
 
 ## Node
 RUN curl -s https://deb.nodesource.com/setup_18.x | bash && apt-get update && apt-get install nodejs -yq \
