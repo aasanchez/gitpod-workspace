@@ -20,7 +20,15 @@ RUN sudo rm -rf /etc/apt/sources.list \
     && sudo apt-get update
 
 ## Homebrew
-RUN /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+RUN apt-get update && apt-get install -y binutils clang make
+RUN git clone https://github.com/Homebrew/brew ~/.linuxbrew/Homebrew \
+    && mkdir ~/.linuxbrew/bin \
+    && ln -s ../Homebrew/bin/brew ~/.linuxbrew/bin \
+    && eval $(~/.linuxbrew/bin/brew shellenv) \
+    && brew --version \
+    && brew tap aws/tap && brew install aws-sam-cli \
+    && sam --version
+ENV PATH=~/.linuxbrew/bin:~/.linuxbrew/sbin:$PATH
 
 ## AWS Cli
 RUN curl -o awscliv2.sig https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip.sig \
@@ -45,8 +53,6 @@ RUN curl -1sLf 'https://dl.cloudsmith.io/public/evilmartians/lefthook/setup.deb.
 RUN wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash \
     && source ~/.profile && nvm install 16 \
     && npm install -g npm && npm install -g pnpm
-
-## pnpm
 
 ## Terraform
 RUN sudo apt-get update && sudo apt-get install -y gnupg software-properties-common \
