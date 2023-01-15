@@ -1,6 +1,8 @@
 FROM ubuntu:focal
 
+ENV DEBIAN_FRONTEND noninteractive
 ENV TZ=Europe/Madrid
+
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 ## Basics
@@ -8,8 +10,7 @@ RUN DEBIAN_FRONTEND="noninteractive" apt-get update && apt-get install -yq git g
     telnet dnsutils git-core build-essential tree curl apt-utils tzdata
 
 ## Configure APT
-RUN DEBIAN_FRONTEND="noninteractive" add-apt-repository ppa:git-core/ppa -y \
-    && sudo apt-get update
+RUN DEBIAN_FRONTEND="noninteractive" add-apt-repository ppa:git-core/ppa -y && sudo apt-get update
 
 RUN sudo rm -rf /etc/apt/sources.list \
     && echo "deb http://archive.ubuntu.com/ubuntu/ focal main restricted universe multiverse" | sudo tee -a  /etc/apt/sources.list \
