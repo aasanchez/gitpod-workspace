@@ -7,9 +7,13 @@ FROM ubuntu:focal
 #   workspace user (`gitpod`) is non-root and won't be able to install
 #   and use `sudo` to install any other tools in a live workspace.
 
+ENV TZ=Asia/Dubai
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+RUN apt-get update && apt-get install -yq apt-utils tzdata
+
 ## Basics
 RUN apt-get update && apt-get install -yq git git-lfs sudo software-properties-common telnet dnsutils git-core \
-    build-essential tree curl
+    build-essential tree curl 
     
 ## Configure APT
 RUN sudo add-apt-repository ppa:git-core/ppa -y \
