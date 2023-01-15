@@ -39,9 +39,7 @@ RUN curl -1sLf 'https://dl.cloudsmith.io/public/evilmartians/lefthook/setup.deb.
     && sudo apt-get update && sudo apt-get install lefthook -yq
 
 ## Node
-RUN wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash \
-    && source ~/.profile && nvm install 16 \
-    && npm install -g npm && npm install -g pnpm
+RUN curl -s https://deb.nodesource.com/setup_18.x | sudo bash && sudo apt-get update && sudo apt-get install nodejs -yq
 
 ## Terraform
 RUN sudo apt-get update && sudo apt-get install -y gnupg software-properties-common \
