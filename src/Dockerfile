@@ -19,25 +19,14 @@ RUN sudo rm -rf /etc/apt/sources.list \
     && echo "deb http://archive.canonical.com/ubuntu focal partner" | sudo tee -a /etc/apt/sources.list \
     && sudo apt-get update
 
-## Homebrew
-RUN apt-get update && apt-get install -y binutils clang make
-RUN git clone https://github.com/Homebrew/brew ~/.linuxbrew/Homebrew \
-    && mkdir ~/.linuxbrew/bin \
-    && ln -s ../Homebrew/bin/brew ~/.linuxbrew/bin \
-    && eval $(~/.linuxbrew/bin/brew shellenv) \
-    && brew --version \
-    && brew tap aws/tap && brew install aws-sam-cli \
-    && sam --version
-ENV PATH=~/.linuxbrew/bin:~/.linuxbrew/sbin:$PATH
-
 ## AWS Cli
 RUN curl -o awscliv2.sig https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip.sig \
     && curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && unzip awscliv2.zip \
     && sudo ./aws/install -i /usr/local/aws-cli -b /usr/local/bin \
     && which aws && ls -l /usr/local/bin/aws && aws --version
 
-## AWS Vault
-RUN brew install aws-vault
+# ## AWS Vault
+# RUN brew install aws-vault
 
 ## AWS-Gate
 RUN apt-get update && apt-get install -y software-properties-common gcc && \
