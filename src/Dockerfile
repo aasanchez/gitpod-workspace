@@ -26,7 +26,8 @@ RUN curl -o awscliv2.sig https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zi
     && which aws && ls -l /usr/local/bin/aws && aws --version
 
 # ## AWS Vault
-# RUN brew install aws-vault
+RUN curl -fsSL 'https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh' | sudo -E bash \
+    && brew install aws-vault
 
 ## AWS-Gate
 RUN apt-get update && apt-get install -y software-properties-common gcc && \
