@@ -39,7 +39,8 @@ RUN curl -1sLf 'https://dl.cloudsmith.io/public/evilmartians/lefthook/setup.deb.
     && sudo apt-get update && sudo apt-get install lefthook -yq
 
 ## Node
-RUN curl -s https://deb.nodesource.com/setup_18.x | sudo bash && sudo apt-get update && sudo apt-get install nodejs -yq
+RUN curl -s https://deb.nodesource.com/setup_18.x | bash && apt-get update && apt-get install nodejs -yq \
+    && npm install -g npm@latest && npm install -g pnpm
 
 ## Terraform
 RUN sudo apt-get update && sudo apt-get install -y gnupg software-properties-common \
