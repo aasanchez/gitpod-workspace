@@ -2,7 +2,8 @@ FROM ubuntu:focal
 
 ENV TZ=Europe/Madrid
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-RUN DEBIAN_FRONTEND="noninteractive" apt-get update && apt-get install -yq apt-utils tzdata
+RUN DEBIAN_FRONTEND="noninteractive" apt-get update 
+RUN DEBIAN_FRONTEND="noninteractive" apt-get install -yq apt-utils tzdata
 
 ## Basics
 RUN DEBIAN_FRONTEND="noninteractive" apt-get update && apt-get install -yq git git-lfs sudo software-properties-common \
