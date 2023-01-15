@@ -9,7 +9,6 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN apt-get update && apt-get install -yq git git-lfs sudo software-properties-common \
     telnet dnsutils git-core build-essential tree curl apt-utils tzdata wget dialog unzip zsh
 
-## Configure APT
 RUN add-apt-repository ppa:git-core/ppa -y && sudo apt-get update && sudo apt-get upgrade -yq
 
 RUN sudo rm -rf /etc/apt/sources.list \
@@ -20,6 +19,9 @@ RUN sudo rm -rf /etc/apt/sources.list \
     && echo "deb http://archive.canonical.com/ubuntu focal partner" | sudo tee -a /etc/apt/sources.list \
     && sudo apt-get update
 
+## Homebrew
+RUN /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
 ## AWS Cli
 RUN curl -o awscliv2.sig https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip.sig \
     && curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && unzip awscliv2.zip \
@@ -27,12 +29,22 @@ RUN curl -o awscliv2.sig https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zi
     && which aws && ls -l /usr/local/bin/aws && aws --version
 
 ## AWS Vault
+RUN brew install aws-vault
 
 ## AWS-Gate
+RUN apt-get update && apt-get install -y software-properties-common gcc && \
+    add-apt-repository -y ppa:deadsnakes/ppa \
+    && apt-get update && apt-get install -y python3-distutils python3-pip python3-apt \
+    && pip install aws-gate
 
 ## lefthook
+RUN curl -1sLf 'https://dl.cloudsmith.io/public/evilmartians/lefthook/setup.deb.sh' | sudo -E bash \
+    && sudo apt-get update && sudo apt-get install lefthook -yq
 
 ## Node
+RUN wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash \
+    && source ~/.profile && nvm install 16 \
+    && npm install -g npm && npm install -g pnpm
 
 ## pnpm
 
