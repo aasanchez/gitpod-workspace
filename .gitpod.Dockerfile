@@ -1,4 +1,4 @@
-FROM ubuntu:jammy
+FROM ubuntu:focal
 
 # Install:
 # - git (and git-lfs), for git operations (to e.g. push your work).
@@ -11,15 +11,15 @@ FROM ubuntu:jammy
 RUN apt-get update && apt-get install -yq git git-lfs sudo
 
 ## Configure APT
-RUN sudo add-apt-repository ppa:git-core/ppa \
+RUN sudo add-apt-repository ppa:git-core/ppa -y \
     && sudo apt-get update
 
-RUN sudo rm -rf /etc/apt/sources.list && sudo rm -rf /etc/apt/sources.list.d/* \
-    && echo "deb http://archive.ubuntu.com/ubuntu/ jammy main restricted universe multiverse" | sudo tee -a  /etc/apt/sources.list \
-    && echo "deb http://archive.ubuntu.com/ubuntu/ jammy-updates main restricted universe multiverse" | sudo tee -a  /etc/apt/sources.list \
-    && echo "deb http://archive.ubuntu.com/ubuntu/ jammy-backports main restricted universe multiverse" | sudo tee -a /etc/apt/sources.list \
-    && echo "deb http://security.ubuntu.com/ubuntu/ jammy-security main restricted universe multiverse" | sudo tee -a /etc/apt/sources.list \
-    && echo "deb http://archive.canonical.com/ubuntu jammy partner" | sudo tee -a /etc/apt/sources.list \
+RUN sudo rm -rf /etc/apt/sources.list \
+    && echo "deb http://archive.ubuntu.com/ubuntu/ focal main restricted universe multiverse" | sudo tee -a  /etc/apt/sources.list \
+    && echo "deb http://archive.ubuntu.com/ubuntu/ focal-updates main restricted universe multiverse" | sudo tee -a  /etc/apt/sources.list \
+    && echo "deb http://archive.ubuntu.com/ubuntu/ focal-backports main restricted universe multiverse" | sudo tee -a /etc/apt/sources.list \
+    && echo "deb http://security.ubuntu.com/ubuntu/ focal-security main restricted universe multiverse" | sudo tee -a /etc/apt/sources.list \
+    && echo "deb http://archive.canonical.com/ubuntu focal partner" | sudo tee -a /etc/apt/sources.list \
     && sudo apt-get update
 
 RUN 
