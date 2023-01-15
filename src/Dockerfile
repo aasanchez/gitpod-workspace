@@ -35,8 +35,8 @@ RUN apt-get update && apt-get install -y software-properties-common gcc && \
     && pip install aws-gate
 
 ## lefthook
-RUN curl -1sLf 'https://dl.cloudsmith.io/public/evilmartians/lefthook/setup.deb.sh' | sudo -E bash \
-    && apt-get update && apt-get install lefthook -yq
+# RUN curl -1sLf 'https://dl.cloudsmith.io/public/evilmartians/lefthook/setup.deb.sh' | sudo -E bash \
+#     && apt-get update && apt-get install lefthook -yq
 
 ## Node
 RUN curl -s https://deb.nodesource.com/setup_18.x | bash && apt-get update && apt-get install nodejs -yq \
