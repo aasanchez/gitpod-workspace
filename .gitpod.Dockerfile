@@ -8,8 +8,9 @@ FROM ubuntu:focal
 #   and use `sudo` to install any other tools in a live workspace.
 
 ## Basics
-RUN apt-get update && apt-get install -yq git git-lfs sudo
-
+RUN apt-get update && apt-get install -yq git git-lfs sudo software-properties-common telnet dnsutils git-core \
+    build-essential tree curl
+    
 ## Configure APT
 RUN sudo add-apt-repository ppa:git-core/ppa -y \
     && sudo apt-get update
@@ -21,8 +22,6 @@ RUN sudo rm -rf /etc/apt/sources.list \
     && echo "deb http://security.ubuntu.com/ubuntu/ focal-security main restricted universe multiverse" | sudo tee -a /etc/apt/sources.list \
     && echo "deb http://archive.canonical.com/ubuntu focal partner" | sudo tee -a /etc/apt/sources.list \
     && sudo apt-get update
-
-RUN 
 
 ## Clean
 RUN && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/*
