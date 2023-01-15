@@ -28,7 +28,7 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2
 # RUN sudo curl -L -o /usr/local/bin/aws-vault https://github.com/99designs/aws-vault/releases/latest/download/aws-vault-linux-$(dpkg --print-architecture) \
 #     && sudo chmod 755 /usr/local/bin/aws-vault
 
-RUN curl -fsSL 'https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh' | bash \
+RUN curl -fsSL 'https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh' | sudo -E bash \
     && brew install aws-vault
 
 ## AWS-Gate
