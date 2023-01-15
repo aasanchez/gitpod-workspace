@@ -14,17 +14,6 @@ stages:
   - publish
 
 build:
-  before_script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
-    - docker pull $CI_REGISTRY_IMAGE/build:$CI_PIPELINE_IID-$NODE_VERSION-$CI_COMMIT_SHORT_SHA || true
-    - >
-      docker build
-      --cache-from $CI_REGISTRY_IMAGE/build:latest
-      --build-arg NODE_VERSION=$NODE_VERSION
-      --no-cache
-      --pull
-      --tag $CI_REGISTRY_IMAGE/build:$CI_PIPELINE_IID-$NODE_VERSION-$CI_COMMIT_SHORT_SHA
-      src
-    - docker push $CI_REGISTRY_IMAGE/build:$CI_PIPELINE_IID-$NODE_VERSION-$CI_COMMIT_SHORT_SHA 
+    - docker build --tag $CI_REGISTRY_IMAGE/build:$CI_PIPELINE_IID-$CI_COMMIT_SHORT_SHA .
   stage: build
