@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -yq git git-lfs sudo software-properties-c
     telnet dnsutils git-core build-essential tree curl apt-utils tzdata
 
 ## Configure APT
-RUN add-apt-repository ppa:git-core/ppa -y && sudo apt-get update && git apt-get upgrade -yq
+RUN add-apt-repository ppa:git-core/ppa -y && sudo apt-get update && sudo apt-get upgrade -yq
 
 RUN sudo rm -rf /etc/apt/sources.list \
     && echo "deb http://archive.ubuntu.com/ubuntu/ focal main restricted universe multiverse" | sudo tee -a  /etc/apt/sources.list \
