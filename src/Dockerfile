@@ -7,7 +7,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 ## Basics
 RUN apt-get update && apt-get install -yq git git-lfs software-properties-common \
-    telnet dnsutils git-core build-essential tree curl apt-utils tzdata wget dialog unzip zsh
+    telnet dnsutils git-core build-essential tree curl apt-utils tzdata wget dialog unzip zsh sudo
 
 RUN add-apt-repository ppa:git-core/ppa -y && apt-get update && apt-get upgrade -yq
 
@@ -20,13 +20,16 @@ RUN rm -rf /etc/apt/sources.list \
     && apt-get update
 
 # ## AWS Cli
-# RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && unzip -u awscliv2.zip \
-#     && sudo ./aws/install -i /usr/local/aws-cli -b /usr/local/bin \
-#     && which aws && ls -l /usr/local/bin/aws && aws --version
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && unzip -u awscliv2.zip \
+    && sudo ./aws/install -i /usr/local/aws-cli -b /usr/local/bin \
+    && which aws && ls -l /usr/local/bin/aws && aws --version
 
 # ## AWS Vault
-# RUN curl -fsSL 'https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh' | bash 
-    # && brew install aws-vault
+# RUN sudo curl -L -o /usr/local/bin/aws-vault https://github.com/99designs/aws-vault/releases/latest/download/aws-vault-linux-$(dpkg --print-architecture) \
+#     && sudo chmod 755 /usr/local/bin/aws-vault
+
+RUN curl -fsSL 'https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh' | bash \
+    && brew install aws-vault
 
 ## AWS-Gate
 RUN apt-get update && apt-get install -y software-properties-common gcc && \
