@@ -1,15 +1,12 @@
 FROM ubuntu:focal
 
-RUN apt-get update && apt-get install -yq apt-utils
-
 ENV TZ=Europe/Madrid
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-RUN DEBIAN_FRONTEND="noninteractive" apt-get install -yq tzdata
 
 ## Basics
 RUN DEBIAN_FRONTEND="noninteractive" apt-get update && apt-get install -yq git git-lfs sudo software-properties-common \
-    telnet dnsutils git-core build-essential tree curl 
-    
+    telnet dnsutils git-core build-essential tree curl apt-utils tzdata
+
 ## Configure APT
 RUN DEBIAN_FRONTEND="noninteractive" add-apt-repository ppa:git-core/ppa -y \
     && sudo apt-get update
