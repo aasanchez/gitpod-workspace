@@ -20,9 +20,8 @@ RUN rm -rf /etc/apt/sources.list \
     && apt-get update
 
 ## AWS Cli
-RUN curl -o awscliv2.sig https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip.sig \
-    && curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && unzip awscliv2.zip \
-    && ./aws/install -i /usr/local/aws-cli -b /usr/local/bin \
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && unzip -u awscliv2.zip \
+    && sudo ./aws/install -i /usr/local/aws-cli -b /usr/local/bin \
     && which aws && ls -l /usr/local/bin/aws && aws --version
 
 # ## AWS Vault
