@@ -57,7 +57,7 @@ container_scanning:
   stage: test
 
 hadolint:
-  stage: test
+  stage: build
   image: registry.gitlab.com/pipeline-components/hadolint:latest
   script:
     - hadolint src/Dockerfile
