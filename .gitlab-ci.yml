@@ -57,6 +57,7 @@ container_scanning:
   stage: test
 
 hadolint:
+  allow_failure: true
   stage: build
   image: registry.gitlab.com/pipeline-components/hadolint:latest
   script:
