@@ -2,6 +2,7 @@ include:
   - template: Jobs/Container-Scanning.gitlab-ci.yml
   - template: Security/SAST.gitlab-ci.yml
   - template: Security/Secret-Detection.gitlab-ci.yml
+  - local: '.gitlab/ci/*.gitlab-ci.yml'
 
 image:
   name: docker:latest
@@ -18,48 +19,3 @@ stages:
   - build
   - test
   - publish
-
-docker/lint:
-  allow_failure: true
-  image: projectatomic/dockerfile-lint:latest
-  script:
-    - dockerfile_lint -f src/Dockerfile
-  stage: build
-
-build:
-  before_script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-  script:
-    - docker pull $CI_REGISTRY_IMAGE/build:$DOCKER_TAG || true
-    - >
-      docker build
-      --cache-from $CI_REGISTRY_IMAGE/build:latest
-      --no-cache
-      --pull
-      --tag $CI_REGISTRY_IMAGE/build:$DOCKER_TAG
-      src
-    - docker push $CI_REGISTRY_IMAGE/build:$DOCKER_TAG
-    - docker tag  $CI_REGISTRY_IMAGE/build:$DOCKER_TAG $CI_REGISTRY_IMAGE/build:latest
-    - docker push $CI_REGISTRY_IMAGE/build:latest
-  stage: build
-
-sast:
-  stage: build
-
-secret_detection:
-  stage: build
-
-container_scanning:
-  variables:
-    CS_DOCKERFILE_PATH: $DOCKERFILE_PATH
-    CS_IMAGE: $CI_REGISTRY_IMAGE/build:$DOCKER_TAG
-    GIT_STRATEGY: fetch
-    SECURE_LOG_LEVEL: 'debug'
-  stage: test
-
-hadolint:
-  allow_failure: true
-  stage: build
-  image: registry.gitlab.com/pipeline-components/hadolint:latest
-  script:
-    - hadolint --ignore DL3008 --ignore DL3013 --ignore DL3016 src/Dockerfile

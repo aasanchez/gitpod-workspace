@@ -1,0 +1,23 @@
+docker/lint:
+  allow_failure: true
+  image: projectatomic/dockerfile-lint:latest
+  script:
+    - dockerfile_lint -f src/Dockerfile
+  stage: build
+
+build:
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - docker pull $CI_REGISTRY_IMAGE/build:$DOCKER_TAG || true
+    - >
+      docker build
+      --cache-from $CI_REGISTRY_IMAGE/build:latest
+      --no-cache
+      --pull
+      --tag $CI_REGISTRY_IMAGE/build:$DOCKER_TAG
+      src
+    - docker push $CI_REGISTRY_IMAGE/build:$DOCKER_TAG
+    - docker tag  $CI_REGISTRY_IMAGE/build:$DOCKER_TAG $CI_REGISTRY_IMAGE/build:latest
+    - docker push $CI_REGISTRY_IMAGE/build:latest
+  stage: build
