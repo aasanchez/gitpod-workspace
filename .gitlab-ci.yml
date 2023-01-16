@@ -1,3 +1,8 @@
+include:
+  - template: Jobs/Container-Scanning.gitlab-ci.yml
+  - template: Security/SAST.gitlab-ci.yml
+  - template: Security/Secret-Detection.gitlab-ci.yml
+
 image:
   name: docker:latest
 
@@ -7,11 +12,46 @@ services:
 variables:
   DOCKERFILE_PATH: "src/Dockerfile"
   DOCKER_TLS_CERTDIR: ""
+  DOCKER_TAG: $CI_PIPELINE_IID-$CI_COMMIT_SHORT_SHA
 
 stages:
   - build
+  - test
+  - publish
+
+docker/lint:
+  image: projectatomic/dockerfile-lint:latest
+  script:
+    - dockerfile_lint -f Dockerfile
+  stage: build
 
 build:
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
-    - docker build --tag $CI_REGISTRY_IMAGE/build:$CI_PIPELINE_IID-$CI_COMMIT_SHORT_SHA src
+    - docker pull $CI_REGISTRY_IMAGE/build:$DOCKER_TAG || true
+    - >
+      docker build
+      --cache-from $CI_REGISTRY_IMAGE/build:latest
+      --no-cache
+      --pull
+      --tag $CI_REGISTRY_IMAGE/build:$DOCKER_TAG
+      src
+    - docker push $CI_REGISTRY_IMAGE/build:$DOCKER_TAG
+    - docker tag  $CI_REGISTRY_IMAGE/build:$DOCKER_TAG $CI_REGISTRY_IMAGE/build:latest
+    - docker push $CI_REGISTRY_IMAGE/build:latest
   stage: build
+
+sast:
+  stage: build
+
+secret_detection:
+  stage: build
+
+container_scanning:
+  variables:
+    CS_DOCKERFILE_PATH: $DOCKERFILE_PATH
+    CS_IMAGE: $CI_REGISTRY_IMAGE/build:$DOCKER_TAG
+    GIT_STRATEGY: fetch
+    SECURE_LOG_LEVEL: 'debug'
+  stage: test
