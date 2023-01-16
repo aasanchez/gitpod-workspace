@@ -1,5 +1,7 @@
 FROM ubuntu:focal
 
+LABEL name="gitpod.io workspace"
+
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Europe/Madrid
 
@@ -7,7 +9,8 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 ## Basics
 RUN apt-get update && apt-get install -yq git git-lfs software-properties-common \
-    telnet dnsutils git-core build-essential tree curl apt-utils tzdata wget dialog unzip zsh sudo
+    telnet dnsutils git-core build-essential tree curl apt-utils tzdata wget dialog unzip zsh sudo \
+    && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/*
 
 RUN add-apt-repository ppa:git-core/ppa -y && apt-get update && apt-get upgrade -yq
 
@@ -17,7 +20,8 @@ RUN rm -rf /etc/apt/sources.list \
     && echo "deb http://archive.ubuntu.com/ubuntu/ focal-backports main restricted universe multiverse" | tee -a /etc/apt/sources.list \
     && echo "deb http://security.ubuntu.com/ubuntu/ focal-security main restricted universe multiverse" | tee -a /etc/apt/sources.list \
     && echo "deb http://archive.canonical.com/ubuntu focal partner" | tee -a /etc/apt/sources.list \
-    && apt-get update
+    && apt-get update \
+    && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/*
 
 # ## AWS Cli
 RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && unzip -u awscliv2.zip \
@@ -32,7 +36,8 @@ RUN sudo curl -L -o /usr/local/bin/aws-vault https://github.com/99designs/aws-va
 RUN apt-get update && apt-get install -y software-properties-common gcc && \
     add-apt-repository -y ppa:deadsnakes/ppa \
     && apt-get update && apt-get install -y python3-distutils python3-pip python3-apt \
-    && pip install aws-gate
+    && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* \
+    && pip install aws-gate 
 
 ## lefthook
 RUN curl -1sLf 'https://dl.cloudsmith.io/public/evilmartians/lefthook/setup.deb.sh' | sudo -E bash \
@@ -48,6 +53,7 @@ RUN apt-get update && apt-get install -y gnupg software-properties-common \
     && gpg --no-default-keyring --keyring /usr/share/keyrings/hashicorp-archive-keyring.gpg --fingerprint \
     && echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | \
     tee /etc/apt/sources.list.d/hashicorp.list \
+    && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* \
     && apt-get update && apt-get install terraform
 
 ## Clean
