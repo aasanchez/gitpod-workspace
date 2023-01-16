@@ -1,6 +1,7 @@
 FROM ubuntu:focal
 
 LABEL name="gitpod.io workspace"
+LABEL version="1.0.0"
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Europe/Madrid
@@ -12,11 +13,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends git git-lfs sof
     telnet dnsutils git-core build-essential tree curl apt-utils tzdata wget dialog unzip zsh sudo \
     && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/*
 
-RUN add-apt-repository ppa:git-core/ppa -y && apt-get update &&  apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/*
+RUN add-apt-repository ppa:git-core/ppa -y && apt-get update && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/*
 
 RUN rm -rf /etc/apt/sources.list \
-    && echo "deb http://archive.ubuntu.com/ubuntu/ focal main restricted universe multiverse" | tee -a  /etc/apt/sources.list \
-    && echo "deb http://archive.ubuntu.com/ubuntu/ focal-updates main restricted universe multiverse" | tee -a  /etc/apt/sources.list \
+    && echo "deb http://archive.ubuntu.com/ubuntu/ focal main restricted universe multiverse" | tee -a /etc/apt/sources.list \
+    && echo "deb http://archive.ubuntu.com/ubuntu/ focal-updates main restricted universe multiverse" | tee -a /etc/apt/sources.list \
     && echo "deb http://archive.ubuntu.com/ubuntu/ focal-backports main restricted universe multiverse" | tee -a /etc/apt/sources.list \
     && echo "deb http://security.ubuntu.com/ubuntu/ focal-security main restricted universe multiverse" | tee -a /etc/apt/sources.list \
     && echo "deb http://archive.canonical.com/ubuntu focal partner" | tee -a /etc/apt/sources.list \
@@ -41,20 +42,20 @@ RUN apt-get update && apt-get install -y --no-install-recommends software-proper
 
 ## lefthook
 RUN curl -1sLf 'https://dl.cloudsmith.io/public/evilmartians/lefthook/setup.deb.sh' | sudo -E bash \
-    && apt-get update && apt-get install -y --no-install-recommends lefthook
+    && apt-get update && apt-get install -y --no-install-recommends lefthook \
+    && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/*
 
 ## Node
 RUN curl -s https://deb.nodesource.com/setup_18.x | bash && apt-get update && apt-get install -y --no-install-recommends nodejs \
     && npm install -g npm@latest && npm install -g pnpm
 
 ## Terraform
-RUN apt-get update && apt-get install -y --no-install-recommends gnupg software-properties-common \
+RUN apt-get update && apt-get install -y --no-install-recommends gnupg software-properties-common && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* \
     && curl -s https://apt.releases.hashicorp.com/gpg -o gpg | gpg --dearmor | tee /usr/share/keyrings/hashicorp-archive-keyring.gpg \
     && gpg --no-default-keyring --keyring /usr/share/keyrings/hashicorp-archive-keyring.gpg --fingerprint \
     && echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | \
     tee /etc/apt/sources.list.d/hashicorp.list \
-    && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* \
-    && apt-get update && apt-get install terraform
+    && apt-get update && apt-get install terraform && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/*
 
 ## Clean
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/*
