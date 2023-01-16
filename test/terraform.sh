@@ -2,6 +2,6 @@
 echo 'Testing Terraform Installation'
 echo '----------'
 echo ''
-terrform --version || exit 1
+terraform --version || exit 1
 echo ''
 echo '----------'
