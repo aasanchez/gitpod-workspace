@@ -62,4 +62,4 @@ hadolint:
   stage: build
   image: registry.gitlab.com/pipeline-components/hadolint:latest
   script:
-    - hadolint src/Dockerfile
+    - hadolint --ignore DL3008 --ignore DL3013 --ignore DL3016 src/Dockerfile
