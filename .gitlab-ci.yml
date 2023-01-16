@@ -55,3 +55,9 @@ container_scanning:
     GIT_STRATEGY: fetch
     SECURE_LOG_LEVEL: 'debug'
   stage: test
+
+hadolint:
+  stage: test
+  image: registry.gitlab.com/pipeline-components/hadolint:latest
+  script:
+    - hadolint src/Dockerfile
