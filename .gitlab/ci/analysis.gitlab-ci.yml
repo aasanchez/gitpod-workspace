@@ -4,3 +4,19 @@ hadolint:
   image: registry.gitlab.com/pipeline-components/hadolint:latest
   script:
     - hadolint --ignore DL3008 --ignore DL3013 --ignore DL3016 src/Dockerfile
+
+sast:
+  stage: build
+
+secret_detection:
+  variables:
+    SECRET_DETECTION_HISTORIC_SCAN: "true"
+  stage: build
+
+container_scanning:
+  variables:
+    CS_DOCKERFILE_PATH: $DOCKERFILE_PATH
+    CS_IMAGE: $CI_REGISTRY_IMAGE/build:$DOCKER_TAG
+    GIT_STRATEGY: fetch
+    SECURE_LOG_LEVEL: 'debug'
+  stage: test
