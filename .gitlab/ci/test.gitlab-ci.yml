@@ -3,8 +3,38 @@
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker pull $CI_REGISTRY_IMAGE/build:$DOCKER_TAG || true
 
+test-aws-gate:
+  extends: .pull_docker
+  script:
+    - docker run --entrypoint "" --rm $CI_REGISTRY_IMAGE/build:$DOCKER_TAG /bin/sh -c "$(cat ./test/aws-gate.sh)" || exit 1
+  stage: test
+
+test-aws-vault:
+  extends: .pull_docker
+  script:
+    - docker run --entrypoint "" --rm $CI_REGISTRY_IMAGE/build:$DOCKER_TAG /bin/sh -c "$(cat ./test/aws-vault.sh)" || exit 1
+  stage: test
+
 test-aws:
   extends: .pull_docker
   script:
     - docker run --entrypoint "" --rm $CI_REGISTRY_IMAGE/build:$DOCKER_TAG /bin/sh -c "$(cat ./test/aws.sh)" || exit 1
+  stage: test
+
+test-lefthook:
+  extends: .pull_docker
+  script:
+    - docker run --entrypoint "" --rm $CI_REGISTRY_IMAGE/build:$DOCKER_TAG /bin/sh -c "$(cat ./test/lefthook.sh)" || exit 1
+  stage: test
+
+test-node:
+  extends: .pull_docker
+  script:
+    - docker run --entrypoint "" --rm $CI_REGISTRY_IMAGE/build:$DOCKER_TAG /bin/sh -c "$(cat ./test/node.sh)" || exit 1
+  stage: test
+
+test-terraform:
+  extends: .pull_docker
+  script:
+    - docker run --entrypoint "" --rm $CI_REGISTRY_IMAGE/build:$DOCKER_TAG /bin/sh -c "$(cat ./test/terraform.sh)" || exit 1
   stage: test
