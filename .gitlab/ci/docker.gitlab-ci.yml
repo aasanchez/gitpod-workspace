@@ -21,3 +21,4 @@ build:
     - docker tag  $CI_REGISTRY_IMAGE/build:$DOCKER_TAG $CI_REGISTRY_IMAGE/build:latest
     - docker push $CI_REGISTRY_IMAGE/build:latest
   stage: build
+  
