@@ -30,7 +30,7 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2
     && command -v aws && ls -l /usr/local/bin/aws && aws --version
 
 # ## AWS Vault
-RUN sudo curl -L -o /usr/local/bin/aws-vault https://github.com/99designs/aws-vault/releases/latest/download/aws-vault-linux-$(dpkg --print-architecture) \
+RUN sudo curl -L -o /usr/local/bin/aws-vault "https://github.com/99designs/aws-vault/releases/latest/download/aws-vault-linux-$(dpkg --print-architecture)" \
     && sudo chmod 755 /usr/local/bin/aws-vault
 
 ## AWS-Gate
@@ -38,7 +38,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends software-proper
     add-apt-repository -y ppa:deadsnakes/ppa \
     && apt-get update && apt-get install -y --no-install-recommends python3-distutils python3-pip python3-apt \
     && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* \
-    && pip install aws-gate 
+    && pip install --no-cache-dir aws-gate 
 
 ## lefthook
 RUN curl -1sLf 'https://dl.cloudsmith.io/public/evilmartians/lefthook/setup.deb.sh' | sudo -E bash \
