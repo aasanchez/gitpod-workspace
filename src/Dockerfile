@@ -42,7 +42,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends software-proper
     && pip install --no-cache-dir aws-gate 
 
 ## lefthook
-RUN curl -1sLf 'https://dl.cloudsmith.io/public/evilmartians/lefthook/setup.deb.sh' | sudo -E bash \
+RUN curl -1sLf 'https://dl.cloudsmith.io/public/evilmartians/lefthook/setup.deb.sh' | bash \
     && apt-get update && apt-get install -y --no-install-recommends lefthook \
     && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/*
 
