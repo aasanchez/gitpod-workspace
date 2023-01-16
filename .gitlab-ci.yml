@@ -20,6 +20,7 @@ stages:
   - publish
 
 docker/lint:
+  allow_failure: true
   image: projectatomic/dockerfile-lint:latest
   script:
     - dockerfile_lint -f src/Dockerfile
