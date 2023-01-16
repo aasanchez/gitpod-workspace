@@ -22,7 +22,7 @@ stages:
 docker/lint:
   image: projectatomic/dockerfile-lint:latest
   script:
-    - dockerfile_lint -f Dockerfile
+    - dockerfile_lint -f src/Dockerfile
   stage: build
 
 build:
