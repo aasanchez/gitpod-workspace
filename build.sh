@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-docker build src
+docker build src --tag aasanchez/alpine:"$(date +%s)"

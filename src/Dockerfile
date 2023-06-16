@@ -1,15 +1,8 @@
-FROM ubuntu:focal
+FROM gitpod/workspace-full
 
-LABEL name="gitpod.io workspace"
-LABEL version="1.0.0"
+RUN sudo add-apt-repository ppa:git-core/ppa -y
 
-ENV DEBIAN_FRONTEND=noninteractive
-ENV TZ=Europe/Madrid
-
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-
-## Basics
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends \
     apt-utils \
     build-essential \
     curl \
@@ -26,24 +19,16 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     unzip \
     wget \
     zsh \
-    && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/*
+    && sudo apt-get clean && sudo rm -rf /var/lib/apt/lists/* /tmp/*
 
-RUN add-apt-repository -y ppa:git-core/ppa && apt-get update && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/*
+RUN sudo apt-get update && \
+    sudo apt-get install -y zsh && \
+    sudo rm -rf /var/lib/apt/lists/*
 
-SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-RUN rm -rf /etc/apt/sources.list \
-    && echo "deb http://archive.ubuntu.com/ubuntu/ focal main restricted universe multiverse" | tee -a /etc/apt/sources.list \
-    && echo "deb http://archive.ubuntu.com/ubuntu/ focal-updates main restricted universe multiverse" | tee -a /etc/apt/sources.list \
-    && echo "deb http://archive.ubuntu.com/ubuntu/ focal-backports main restricted universe multiverse" | tee -a /etc/apt/sources.list \
-    && echo "deb http://security.ubuntu.com/ubuntu/ focal-security main restricted universe multiverse" | tee -a /etc/apt/sources.list \
-    && echo "deb http://archive.canonical.com/ubuntu focal partner" | tee -a /etc/apt/sources.list \
-    && apt-get update \
-    && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/*
+ENV TERM xterm
+ENV ZSH_THEME agnoster
+ENV SHELL=/usr/bin/zsh
 
-## Clean
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/*
+RUN wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh || true
 
-# Create the gitpod user. UID must be 33333.
-RUN useradd -l -u 33333 -G sudo -md /home/gitpod -s /bin/bash -p gitpod gitpod
-
-USER gitpod
+CMD [ "zsh" ]
